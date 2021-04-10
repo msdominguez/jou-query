@@ -1,0 +1,87 @@
+<html>
+
+<head>
+    <title>jou query</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="icon" href="./cloud.png" />
+</head>
+
+<body class="pink main-bg" onload="onLoadEntry()">
+    <div class="entry-top-row">
+        <a href="/" onclick="onClickBackEntry()">
+            <svg class="icon back-btn" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline
+            points="12
+                    19 5 12 12 5"
+          ></polyline>
+        </svg>
+        </a>
+        <div class="entry-actions">
+            <svg id="heart-entry" class="heart" width="23" height="21" viewBox="0 0 23 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M20.2913 2.61183C19.7805 2.10083 19.1741 1.69547 18.5066 1.41891C17.8392 1.14235 17.1238 1 16.4013 1C15.6788 1 14.9634 1.14235 14.2959 1.41891C13.6285 1.69547 13.022 2.10083 12.5113 2.61183L11.4513 3.67183L10.3913 2.61183C9.3596 1.58013 7.96032 1.00053 6.50129 1.00053C5.04226 1.00053 3.64298 1.58013 2.61129 2.61183C1.5796 3.64352 1 5.04279 1 6.50183C1 7.96086 1.5796 9.36013 2.61129 10.3918L3.67129 11.4518L11.4513 19.2318L19.2313 11.4518L20.2913 10.3918C20.8023 9.88107 21.2076 9.27464 21.4842 8.60718C21.7608 7.93972 21.9031 7.22431 21.9031 6.50183C21.9031 5.77934 21.7608 5.06393 21.4842 4.39647C21.2076 3.72901 20.8023 3.12258 20.2913 2.61183V2.61183Z"
+            stroke="var(--jou-color)"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+            <svg class="edit" onclick="onClickEditEntry()" width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M19.9122 2.04449C20.2434 1.71335 20.6365 1.45067 21.0692 1.27146C21.5018 1.09224 21.9656 1 22.4339 1C22.9022 1 23.3659 1.09224 23.7986 1.27146C24.2312 1.45067 24.6244 1.71335 24.9555 2.04449C25.2867 2.37564 25.5493 2.76877 25.7285 3.20143C25.9078 3.63409 26 4.09782 26 4.56613C26 5.03444 25.9078 5.49816 25.7285 5.93082C25.5493 6.36349 25.2867 6.75661 24.9555 7.08776L7.93449 24.1088L1 26L2.89122 19.0655L19.9122 2.04449Z"
+            stroke="var(--jou-color)"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+            <svg class="trash" onclick="onClickDeleteEntry()" width="25" height="27" viewBox="0 0 25 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M1 6H3.5H23.5"
+            stroke="var(--jou-color)"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M7.24999 6V3.5C7.24999 2.83696 7.51338 2.20107 7.98223 1.73223C8.45107 1.26339 9.08695 1 9.74999 1H14.75C15.413 1 16.0489 1.26339 16.5178 1.73223C16.9866 2.20107 17.25 2.83696 17.25 3.5V6M21 6V23.5C21 24.163 20.7366 24.7989 20.2678 25.2678C19.7989 25.7366 19.163 26 18.5 26H5.99999C5.33695 26 4.70107 25.7366 4.23223 25.2678C3.76338 24.7989 3.49999 24.163 3.49999 23.5V6H21Z"
+            stroke="var(--jou-color)"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M9.75001 12.25V19.75"
+            stroke="var(--jou-color)"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M14.75 12.25V19.75"
+            stroke="var(--jou-color)"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        </div>
+    </div>
+    <div class="entry-container">
+        <div class="date-time">
+            <label class="date"></label>
+            <label class="separator">•</label>
+            <label class="time"></label>
+        </div>
+        <h1 class="title"></h1>
+        <p class="song"></p>
+        <p class="entry"></p>
+    </div>
+    <p id="saveToast" class="save-btn-toast"></p>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="entry.js"></script>
+</body>
+
+</html>

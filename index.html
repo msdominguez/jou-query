@@ -1,0 +1,95 @@
+<html>
+
+<head>
+    <title>jou query</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="icon" href="./cloud.png" />
+</head>
+
+<body class="pink" onload="onLoad()">
+    <div class="filters-modal hide">
+        <svg class="close-btn" onclick="onCloseFiltersModal()" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0
+        24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </div>
+    <div class="home-content">
+        <div class="header-block">
+            <div class="title-block">
+                <svg height="1" width="110">
+            <line
+              x1="100"
+              y1="0"
+              x2="10"
+              y2="0"
+              style="stroke: var(--jou-neutral-3); stroke-width: 2"
+            />
+          </svg>
+                <h1 class="header">jou query</h1>
+                <svg height="1" width="110">
+            <line
+              x1="100"
+              y1="0"
+              x2="20"
+              y2="0"
+              style="stroke: var(--jou-neutral-3); stroke-width: 2"
+            />
+          </svg>
+            </div>
+            <h2 class="subheader">jou query . herokuapp . com</h2>
+            <div class="main-btn-container">
+                <a href="/upsert-entry.html">
+                    <button class="btn-primary add-new-btn">add new</button>
+                </a>
+            </div>
+            <div class="home-actions">
+                <svg class="icon favorites-btn" onclick="onClickFavoritesIcon()" width="35" height="25" viewBox="0 0 41 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12.0087 3.31328C13.4894 1.8326 15.4976 1.00077 17.5916
+                  1.00077C19.6856 1.00077 21.6938 1.8326 23.1745 3.31328L24.6958
+                  4.83458L26.2171 3.31328C26.9502 2.5799 27.8205 1.99814 28.7784
+                  1.60122C29.7364 1.2043 30.7631 1 31.8 1C32.8369 1 33.8637
+                  1.2043 34.8216 1.60122C35.7795 1.99814 36.6499 2.5799 37.3829
+                  3.31328C38.1163 4.04631 38.6981 4.91666 39.095 5.87459C39.4919
+                  6.83252 39.6962 7.85927 39.6962 8.89618C39.6962 9.93309
+                  39.4919 10.9598 39.095 11.9178C38.6981 12.8757 38.1163 13.746
+                  37.3829 14.4791L35.8616 16.0004L24.6958 27.1662L20.1963
+                  22.6666M12.0087 3.31328C10.528 4.79396 9.6962 6.80219 9.6962
+                  8.89618C9.6962 10.9902 10.528 12.9984 12.0087 14.4791L13.53
+                  16.0004L20.1963 22.6666M12.0087 3.31328C9.40455 0.875521
+                  3.11957 1.04904e-05 1.19651 6.50001C-0.726563 13 12.0085 23.5
+                  15.6962 27.1662L20.1963 22.6666"
+              class="icon"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+                <svg class="icon filter-btn" onclick="onClickFiltersIcon()" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-filter">
+            <polygon
+              points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"
+            ></polygon>
+          </svg>
+            </div>
+        </div>
+        <div class="entries-container"></div>
+        <div class="pag-container">
+            <svg id="left-btn" onClick="onClickPagePrev()" class="pag-btn hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-skip-back">
+          <polygon points="19 20 9 12 19 4 19 20"></polygon>
+          <line x1="5" y1="19" x2="5" y2="5"></line>
+        </svg>
+            <svg id="right-btn" class="pag-btn" onClick="onClickPageNext()" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-skip-forward">
+          <polygon points="5 4 15 12 5 20 5 4"></polygon>
+          <line x1="19" y1="5" x2="19" y2="19"></line>
+        </svg>
+        </div>
+    </div>
+    <p id="saveToast" class="save-btn-toast"></p>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>
