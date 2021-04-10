@@ -1,6 +1,6 @@
 # jou-query
 
-A journal application built with JQuery and Node.js. Create, view, edit, delete, and favorite journal entries.
+A journal application built with JQuery, Node.js, and MongoDB. Create, view, edit, delete, and favorite journal entries.
 
 ## How to use
 
