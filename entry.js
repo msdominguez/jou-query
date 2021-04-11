@@ -10,7 +10,6 @@ onLoadEntry = () => {
     const entryFormatted = currentEntry.entry.split(/\r?\n/);
 
     $(".entry").html("");
-    console.log(entryFormatted);
     entryFormatted.map((entry) => {
         if (entry === "") {
             $(".entry").append('<p class="entry-line-spacer"></p>');
