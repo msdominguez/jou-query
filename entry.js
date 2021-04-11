@@ -25,7 +25,7 @@ onLoadEntry = () => {
     }
 };
 
-onClickBackEntry = () => {
+onClickHome = () => {
     localStorage.clear();
 };
 

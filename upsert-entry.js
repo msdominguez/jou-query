@@ -46,7 +46,7 @@ onLoad = () => {
     }
 };
 
-onClickBack = () => {
+onClickHome = () => {
     localStorage.clear();
 };
 

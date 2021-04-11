@@ -288,6 +288,10 @@ select {
     background: var(--jou-neutral-1);
 }
 
+.entry {
+    padding-top: 1.5rem;
+}
+
 .title {
     color: var(--jou-neutral-4);
 }
@@ -332,8 +336,8 @@ select {
     float: right;
 }
 
-.back-btn {
-    height: 50px;
+.home-btn {
+    height: 35px;
     width: auto;
     padding: 0.5rem 1rem;
 }
