@@ -5,7 +5,6 @@ let currentPage = 0;
 let numPages = 0;
 
 onClickPageNext = () => {
-    console.log(numPages);
     currentPage += 1;
     currentIndex += numEntriesPerPage;
 
@@ -221,17 +220,6 @@ resetPaginationEntries = () => {
 };
 
 onLoad = () => {
-    const options = {
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric",
-        hour12: true,
-        timeZone: "UTC",
-    };
-
-    const time = new Date().toLocaleTimeString("en-US", options);
-    $("#timeInput").val(time);
-
     resetPaginationEntries();
 };
 
