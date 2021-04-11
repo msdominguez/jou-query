@@ -35,28 +35,31 @@ onClickEditEntry = () => {
 };
 
 onClickDeleteEntry = () => {
-    $.ajax({
-        type: "POST",
-        url: "/deleteEntry",
-        contentType: "application/json",
-        data: JSON.stringify({
-            time: currentEntry.time,
-            date: currentEntry.date,
-            title: currentEntry.title,
-            song: currentEntry.song,
-            entry: currentEntry.entry,
-            favorite: currentEntry.favorite,
-        }),
-        error: function(e) {
-            $("#saveToast").html("error saving");
-            $("#saveToast").append(`<p>log: ${e.status}: ${e.statusText}</p>`);
-        },
-        success: function(data) {
-            $("#saveToast").html("saved");
-        },
-    });
-    localStorage.clear();
-    window.location.href = "/";
+    const confirmDelete = confirm("are you sure you want to delete this entry?");
+    if (confirmDelete) {
+        $.ajax({
+            type: "POST",
+            url: "/deleteEntry",
+            contentType: "application/json",
+            data: JSON.stringify({
+                time: currentEntry.time,
+                date: currentEntry.date,
+                title: currentEntry.title,
+                song: currentEntry.song,
+                entry: currentEntry.entry,
+                favorite: currentEntry.favorite,
+            }),
+            error: function(e) {
+                $("#saveToast").html("error saving");
+                $("#saveToast").append(`<p>log: ${e.status}: ${e.statusText}</p>`);
+            },
+            success: function(data) {
+                $("#saveToast").html("saved");
+            },
+        });
+        localStorage.clear();
+        window.location.href = "/";
+    }
 };
 
 $(document).on("click", ".heart", (event) => {
