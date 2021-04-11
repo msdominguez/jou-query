@@ -284,6 +284,14 @@ textarea {
     color: var(--jou-neutral-4);
 }
 
+.entry-line {
+    padding: 0;
+}
+
+.entry-line-spacer {
+    padding: 0 0 1rem 0;
+}
+
 .separator {
     padding: 0 0.25rem;
 }

@@ -324,8 +324,8 @@ app.post("/deleteEntry", async function(req, resp) {
     const entry = req.body.entry;
     const favorite = req.body.favorite;
 
-    const dateStr = new Date(dateParam).toISOString().split("T")[0];
-    const [year, month, date] = dateStr.split("-");
+    const date = new Date(dateParam).toISOString().split("T")[0];
+    const [year, month] = date.split("-");
 
     try {
         const collectionMonthUpdate = await client.db("jou").collection(year);
@@ -344,7 +344,7 @@ app.post("/deleteEntry", async function(req, resp) {
                 },
             },
         };
-        collectionMonthUpdate.deleteOne(query, update);
+        collectionMonthUpdate.updateOne(query, update);
         return resp.sendStatus(200);
     } catch (err) {
         return resp.status(500).send(err);

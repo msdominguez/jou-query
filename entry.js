@@ -6,7 +6,17 @@ onLoadEntry = () => {
     $(".time").html(currentEntry.time);
     $(".title").html(currentEntry.title);
     $(".song").html(currentEntry.song);
-    $(".entry").html(currentEntry.entry);
+
+    const entryFormatted = currentEntry.entry.split(/\r?\n/);
+
+    $(".entry").html("");
+    console.log(entryFormatted);
+    entryFormatted.map((entry) => {
+        if (entry === "") {
+            $(".entry").append('<p class="entry-line-spacer"></p>');
+        }
+        $(".entry").append(`<p class="entry-line">${entry}</p>`);
+    });
 
     const currentHeart = $("#heart-entry");
     if (currentEntry.favorite) {
