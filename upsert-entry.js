@@ -50,6 +50,10 @@ onClickBack = () => {
     localStorage.clear();
 };
 
+clearToast = () => {
+    $("#saveToast").html("");
+};
+
 onClickSave = () => {
     const amPM = $("#amPMInput").val();
     const time = `${$("#timeInput").val()} ${amPM}`;
@@ -86,6 +90,7 @@ onClickSave = () => {
             },
             success: function(data) {
                 $("#saveToast").html("saved");
+                setTimeout(clearToast, 2000);
             },
         });
     } else {
@@ -108,6 +113,7 @@ onClickSave = () => {
             },
             success: function(data) {
                 $("#saveToast").html("saved");
+                setTimeout(clearToast, 2000);
             },
         });
     }
