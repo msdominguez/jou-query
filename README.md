@@ -1,6 +1,6 @@
 # jou-query
 
-A journal application built with JQuery, Node.js, and MongoDB. Create, view, edit, delete, favorite, and filter journal entries.
+A journal application built with JQuery, Node.js, and MongoDB. Create, view, edit, delete, favorite, and filter journal entries. Designed for iPhone XR.
 
 ## How to use
 
