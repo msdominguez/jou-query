@@ -154,8 +154,7 @@ app.post("/addEntry", async function(req, resp) {
     const entry = req.body.entry;
     const favorite = req.body.favorite;
 
-    const month = date.split("-")[1];
-    const year = date.split("-")[0];
+    const [year, newMonth] = date.split("-");
 
     const monthNames = [
         "January",
@@ -177,12 +176,14 @@ app.post("/addEntry", async function(req, resp) {
         const collectionMonth = await client
             .db("jou")
             .collection(year)
-            .find(month)
+            .find({ month: newMonth })
             .toArray();
+        console.log("collection month", collectionMonth);
         if (collectionMonth.length === 0) {
+            console.log("hello");
             const collectionYear = await client.db("jou").collection(year);
             collectionYear.insertOne({
-                month,
+                month: newMonth,
                 monthName: monthStr,
                 entries: [{
                     time,
