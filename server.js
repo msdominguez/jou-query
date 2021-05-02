@@ -47,103 +47,263 @@ client.connect((err) => {
 //     return resp.json(collection);
 // });
 
+// app.get("/getEntriesCurrentMonth", async function (req, resp) {
+//     const startingIndex = Number(req.query.startingIndex);
+//     const numEntries = Number(req.query.numEntries);
+//     const today = new Date();
+//     const todayStr = today.toISOString().split("T")[0];
+//     const [year, ,] = todayStr.split("-");
+
+//     const collection = await client
+//       .db("Jou")
+//       .collection(year)
+//       .aggregate([
+//         {
+//           $sort: { month: -1 },
+//           $project: {
+//             entries: { $slice: ["$entries", startingIndex, numEntries] },
+//           },
+//         },
+//       ])
+//       .toArray();
+//     return resp.json(collection);
+//   });
+
 app.get("/getFavorites", async function(req, resp) {
     const startingIndex = Number(req.query.startingIndex);
     const numEntries = Number(req.query.numEntries);
     const today = new Date();
     const todayStr = today.toISOString().split("T")[0];
-    const [year, , , ] = todayStr.split("-");
-    const collection = await client
-        .db("jou")
-        .collection(year)
-        .aggregate([{
-                $project: {
-                    entries: {
-                        $filter: {
-                            input: "$entries",
-                            as: "entry",
-                            cond: { $eq: ["$$entry.favorite", true] },
+    const [year, month] = todayStr.split("-");
+
+    const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
+
+    let latestEntries = [];
+    for (let i = 0; i < 12; i++) {
+        let previous = monthNames[(Number(month) - 1 + i) % monthNames.length];
+        latestEntries.push(
+            await client
+            .db("jou")
+            .collection(year)
+            .aggregate([{
+                    $match: {
+                        monthName: previous,
+                    },
+                },
+                {
+                    $project: {
+                        entries: {
+                            $filter: {
+                                input: "$entries",
+                                as: "entry",
+                                cond: { $eq: ["$$entry.favorite", true] },
+                            },
                         },
                     },
                 },
-            },
-            {
-                $project: {
-                    entries: { $slice: ["$entries", startingIndex, numEntries] },
-                },
-            },
-        ])
-        .toArray();
-    return resp.json(collection);
+            ])
+            .toArray()
+        );
+    }
+
+    latestEntries = latestEntries
+        .flat()
+        .map((obj) => obj.entries)
+        .flat();
+
+    const sortedEntries = sortEntries(latestEntries);
+
+    const endIndex =
+        sortedEntries.length < startingIndex + numEntries ?
+        sortedEntries.length :
+        numEntries;
+
+    latestEntries = sortedEntries.slice(startingIndex, endIndex);
+
+    return resp.json(latestEntries);
 });
 
 app.get("/getFavoritesLength", async function(req, resp) {
     const today = new Date();
     const todayStr = today.toISOString().split("T")[0];
-    const [year, , ] = todayStr.split("-");
+    const [year, , month] = todayStr.split("-");
 
-    const collection = await client
-        .db("jou")
-        .collection(year)
-        .aggregate([{
-                $project: {
-                    entries: {
-                        $filter: {
-                            input: "$entries",
-                            as: "entry",
-                            cond: { $eq: ["$$entry.favorite", true] },
+    const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
+
+    let latestEntries = [];
+    for (let i = 0; i < 12; i++) {
+        let previous = monthNames[(Number(month) - 1 + i) % monthNames.length];
+        latestEntries.push(
+            await client
+            .db("jou")
+            .collection(year)
+            .aggregate([{
+                    $match: {
+                        monthName: previous,
+                    },
+                },
+                {
+                    $project: {
+                        entries: {
+                            $filter: {
+                                input: "$entries",
+                                as: "entry",
+                                cond: { $eq: ["$$entry.favorite", true] },
+                            },
                         },
                     },
                 },
-            },
-            {
-                $project: {
-                    entries: {
-                        $size: "$entries",
-                    },
-                },
-            },
-        ])
-        .toArray();
-    return resp.json(collection);
+            ])
+            .toArray()
+        );
+    }
+
+    latestEntries = latestEntries
+        .flat()
+        .map((obj) => obj.entries)
+        .flat();
+
+    const sortedEntries = sortEntries(latestEntries);
+    const latestEntriesLength = sortedEntries.length;
+
+    return resp.json(latestEntriesLength);
 });
 
 app.get("/getEntriesLength", async function(req, resp) {
     const today = new Date();
     const todayStr = today.toISOString().split("T")[0];
-    const [year, , ] = todayStr.split("-");
+    const [year, , month] = todayStr.split("-");
 
-    const collection = await client
-        .db("jou")
-        .collection(year)
-        .aggregate([{
-            $project: {
-                entries: {
-                    $size: "$entries",
+    const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
+
+    let latestEntries = [];
+    for (let i = 0; i < 12; i++) {
+        let previous = monthNames[(Number(month) - 1 + i) % monthNames.length];
+        latestEntries.push(
+            await client
+            .db("jou")
+            .collection(year)
+            .aggregate([{
+                $match: {
+                    monthName: previous,
                 },
-            },
-        }, ])
-        .toArray();
-    return resp.json(collection);
+            }, ])
+            .toArray()
+        );
+    }
+
+    latestEntries = latestEntries
+        .flat()
+        .map((obj) => obj.entries)
+        .flat();
+
+    const sortedEntries = sortEntries(latestEntries);
+    const latestEntriesLength = sortedEntries.length;
+
+    return resp.json(latestEntriesLength);
 });
+
+sortEntries = (entries) => {
+    const sortedEntries = entries.sort((a, b) => {
+        let aDate = new Date(`${a.date} ${a.time}`);
+        let bDate = new Date(`${b.date} ${b.time}`);
+        return bDate - aDate;
+    });
+    return sortedEntries;
+};
 
 app.get("/getEntries", async function(req, resp) {
     const startingIndex = Number(req.query.startingIndex);
     const numEntries = Number(req.query.numEntries);
     const today = new Date();
     const todayStr = today.toISOString().split("T")[0];
-    const [year, , ] = todayStr.split("-");
+    const [year, month] = todayStr.split("-");
 
-    const collection = await client
-        .db("jou")
-        .collection(year)
-        .aggregate([{
-            $project: {
-                entries: { $slice: ["$entries", startingIndex, numEntries] },
-            },
-        }, ])
-        .toArray();
-    return resp.json(collection);
+    const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
+
+    let latestEntries = [];
+    for (let i = 0; i < 12; i++) {
+        let previous = monthNames[(Number(month) - 1 + i) % monthNames.length];
+        latestEntries.push(
+            await client
+            .db("jou")
+            .collection(year)
+            .aggregate([{
+                $match: {
+                    monthName: previous,
+                },
+            }, ])
+            .toArray()
+        );
+    }
+
+    latestEntries = latestEntries
+        .flat()
+        .map((obj) => obj.entries)
+        .flat();
+
+    const sortedEntries = sortEntries(latestEntries);
+
+    const endIndex =
+        sortedEntries.length < startingIndex + numEntries ?
+        sortedEntries.length :
+        numEntries;
+
+    latestEntries = sortedEntries.slice(startingIndex, endIndex);
+
+    return resp.json(latestEntries);
 });
 
 app.post("/addEntry", async function(req, resp) {
@@ -170,7 +330,7 @@ app.post("/addEntry", async function(req, resp) {
         "November",
         "December",
     ];
-    const monthStr = monthNames[new Date(date).getMonth()];
+    const monthStr = monthNames[Number(newMonth) - 1];
 
     try {
         const collectionMonth = await client
@@ -178,9 +338,7 @@ app.post("/addEntry", async function(req, resp) {
             .collection(year)
             .find({ month: newMonth })
             .toArray();
-        console.log("collection month", collectionMonth);
         if (collectionMonth.length === 0) {
-            console.log("hello");
             const collectionYear = await client.db("jou").collection(year);
             collectionYear.insertOne({
                 month: newMonth,

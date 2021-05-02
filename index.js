@@ -12,16 +12,20 @@ onClickPageNext = () => {
 
     if ($(".favorites-btn").attr("fill") === "var(--jou-color)") {
         getFavorites().then((entries) => {
-            if (totalNumEntries <= numEntriesPerPage) {
-                $("#right-btn").addClass("hidden");
-            }
+            getFavoritesLength().then((res) => {
+                totalNumEntries = res;
+                if (totalNumEntries > currentIndex) {
+                    $("#right-btn").addClass("hidden");
+                }
+            });
+
             populateEntries(entries);
         });
     } else {
         getEntries().then((entries) => {
             getEntriesLength().then((res) => {
-                totalNumEntries = res[0].entries;
-                if (totalNumEntries <= numEntriesPerPage) {
+                totalNumEntries = res;
+                if (totalNumEntries > currentIndex) {
                     $("#right-btn").addClass("hidden");
                 }
             });
@@ -50,16 +54,19 @@ onClickPagePrev = () => {
 
     if ($(".favorites-btn").attr("fill") === "var(--jou-color)") {
         getFavorites().then((entries) => {
-            if (totalNumEntries <= numEntriesPerPage) {
-                $("#right-btn").addClass("hidden");
-            }
+            getFavoritesLength().then((res) => {
+                totalNumEntries = res;
+                if (totalNumEntries < currentIndex) {
+                    $("#right-btn").addClass("hidden");
+                }
+            });
             populateEntries(entries);
         });
     } else {
         getEntries().then((entries) => {
             getEntriesLength().then((res) => {
-                totalNumEntries = res[0].entries;
-                if (totalNumEntries <= numEntriesPerPage) {
+                totalNumEntries = res;
+                if (totalNumEntries < currentIndex) {
                     $("#right-btn").addClass("hidden");
                 }
             });
@@ -75,6 +82,9 @@ onClickPagePrev = () => {
 
     if (currentPage === 0) {
         $("#left-btn").addClass("hidden");
+        if (totalNumEntries > numEntriesPerPage) {
+            $("#right-btn").removeClass("hidden");
+        }
     } else {
         $("#left-btn").removeClass("hidden");
     }
@@ -94,7 +104,7 @@ getFavoritesLength = async() => {
 getEntriesLength = async() => {
     try {
         return await $.ajax({
-            url: "/getEntriesLength",
+            url: `/getEntriesLength?startingIndex=${currentIndex}&numEntries=${numEntriesPerPage}`,
             type: "GET",
         });
     } catch (error) {
@@ -125,7 +135,7 @@ getFavorites = async() => {
 };
 
 sortEntries = (entries) => {
-    const sortedEntries = entries[0].entries.sort((a, b) => {
+    const sortedEntries = entries.sort((a, b) => {
         let aDate = new Date(`${a.date} ${a.time}`);
         let bDate = new Date(`${b.date} ${b.time}`);
         return aDate - bDate;
@@ -135,12 +145,11 @@ sortEntries = (entries) => {
 
 populateEntries = (entries) => {
     if (entries.length !== 0) {
-        let entriesArray = Object.entries(entries)[0][1].entries;
         let counter = 0;
 
-        entriesArray = sortEntries(entries);
+        sortedEntries = sortEntries(entries);
 
-        entriesArray.map((entry) => {
+        sortedEntries.map((entry) => {
             const options = {
                 weekday: "long",
                 year: "numeric",
@@ -183,13 +192,15 @@ resetPaginationFavs = () => {
         $("#left-btn").addClass("hidden");
 
         getFavoritesLength().then((res) => {
-            totalNumEntries = res[0].entries;
-            if (totalNumEntries <= numEntriesPerPage) {
-                $("#right-btn").addClass("hidden");
-            } else {
-                $("#right-btn").removeClass("hidden");
+            totalNumEntries = res;
+            if (res !== 0) {
+                if (totalNumEntries <= numEntriesPerPage) {
+                    $("#right-btn").addClass("hidden");
+                } else {
+                    $("#right-btn").removeClass("hidden");
+                }
+                numPages = Math.ceil(totalNumEntries / numEntriesPerPage) - 1;
             }
-            numPages = Math.ceil(totalNumEntries / numEntriesPerPage) - 1;
         });
         populateEntries(entries);
     });
@@ -205,8 +216,8 @@ resetPaginationEntries = () => {
         $("#left-btn").addClass("hidden");
 
         getEntriesLength().then((res) => {
-            if (res[0]) {
-                totalNumEntries = res[0].entries;
+            if (res !== 0) {
+                totalNumEntries = res;
                 if (totalNumEntries <= numEntriesPerPage) {
                     $("#right-btn").addClass("hidden");
                 } else {
