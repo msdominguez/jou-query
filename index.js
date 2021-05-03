@@ -14,7 +14,19 @@ onClickPageNext = () => {
         getFavorites().then((entries) => {
             getFavoritesLength().then((res) => {
                 totalNumEntries = res;
-                if (totalNumEntries > currentIndex) {
+                numPages = Math.ceil(totalNumEntries / numEntriesPerPage) - 1;
+
+                if (currentPage === 0) {
+                    $("#left-btn").addClass("hidden");
+                } else {
+                    $("#left-btn").removeClass("hidden");
+                }
+
+                if (currentPage < numPages) {
+                    $("#right-btn").removeClass("hidden");
+                }
+
+                if (currentPage === numPages) {
                     $("#right-btn").addClass("hidden");
                 }
             });
@@ -25,24 +37,24 @@ onClickPageNext = () => {
         getEntries().then((entries) => {
             getEntriesLength().then((res) => {
                 totalNumEntries = res;
-                if (totalNumEntries > currentIndex) {
+                numPages = Math.ceil(totalNumEntries / numEntriesPerPage) - 1;
+
+                if (currentPage === 0) {
+                    $("#left-btn").addClass("hidden");
+                } else {
+                    $("#left-btn").removeClass("hidden");
+                }
+
+                if (currentPage < numPages) {
+                    $("#right-btn").removeClass("hidden");
+                }
+
+                if (currentPage === numPages) {
                     $("#right-btn").addClass("hidden");
                 }
             });
             populateEntries(entries);
         });
-    }
-
-    if (currentPage === numPages) {
-        $("#right-btn").addClass("hidden");
-    } else {
-        $("#right-btn").removeClass("hidden");
-    }
-
-    if (currentPage === 0) {
-        $("#left-btn").addClass("hidden");
-    } else {
-        $("#left-btn").removeClass("hidden");
     }
 };
 
@@ -56,7 +68,19 @@ onClickPagePrev = () => {
         getFavorites().then((entries) => {
             getFavoritesLength().then((res) => {
                 totalNumEntries = res;
-                if (totalNumEntries < currentIndex) {
+                numPages = Math.ceil(totalNumEntries / numEntriesPerPage) - 1;
+
+                if (currentPage === 0) {
+                    $("#left-btn").addClass("hidden");
+                } else {
+                    $("#left-btn").removeClass("hidden");
+                }
+
+                if (currentPage < numPages) {
+                    $("#right-btn").removeClass("hidden");
+                }
+
+                if (currentPage === numPages) {
                     $("#right-btn").addClass("hidden");
                 }
             });
@@ -66,27 +90,24 @@ onClickPagePrev = () => {
         getEntries().then((entries) => {
             getEntriesLength().then((res) => {
                 totalNumEntries = res;
-                if (totalNumEntries < currentIndex) {
+                numPages = Math.ceil(totalNumEntries / numEntriesPerPage) - 1;
+
+                if (currentPage === 0) {
+                    $("#left-btn").addClass("hidden");
+                } else {
+                    $("#left-btn").removeClass("hidden");
+                }
+
+                if (currentPage < numPages) {
+                    $("#right-btn").removeClass("hidden");
+                }
+
+                if (currentPage === numPages) {
                     $("#right-btn").addClass("hidden");
                 }
             });
             populateEntries(entries);
         });
-    }
-
-    if (currentPage === numPages) {
-        $("#right-btn").addClass("hidden");
-    } else {
-        $("#right-btn").removeClass("hidden");
-    }
-
-    if (currentPage === 0) {
-        $("#left-btn").addClass("hidden");
-        if (totalNumEntries > numEntriesPerPage) {
-            $("#right-btn").removeClass("hidden");
-        }
-    } else {
-        $("#left-btn").removeClass("hidden");
     }
 };
 

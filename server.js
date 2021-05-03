@@ -253,7 +253,7 @@ sortEntries = (entries) => {
 
 app.get("/getEntries", async function(req, resp) {
     const startingIndex = Number(req.query.startingIndex);
-    const numEntries = Number(req.query.numEntries);
+    const numEntriesRequested = Number(req.query.numEntries);
     const today = new Date();
     const todayStr = today.toISOString().split("T")[0];
     const [year, month] = todayStr.split("-");
@@ -296,10 +296,12 @@ app.get("/getEntries", async function(req, resp) {
 
     const sortedEntries = sortEntries(latestEntries);
 
+    // if there are less entries than you requested
+    // ex. 8 entries and you requested the next 10 entries
     const endIndex =
-        sortedEntries.length < startingIndex + numEntries ?
+        sortedEntries.length < startingIndex + numEntriesRequested ?
         sortedEntries.length :
-        numEntries;
+        startingIndex + numEntriesRequested;
 
     latestEntries = sortedEntries.slice(startingIndex, endIndex);
 
