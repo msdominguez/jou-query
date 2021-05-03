@@ -338,6 +338,8 @@ app.post("/addEntry", async function(req, resp) {
             .collection(year)
             .find({ month: newMonth })
             .toArray();
+
+        console.log(collectionMonth);
         if (collectionMonth.length === 0) {
             const collectionYear = await client.db("jou").collection(year);
             collectionYear.insertOne({
@@ -355,7 +357,7 @@ app.post("/addEntry", async function(req, resp) {
         } else {
             const collectionMonthUpdate = await client.db("jou").collection(year);
             const query = {
-                month,
+                month: newMonth,
             };
             const options = { upsert: false };
             const update = {
