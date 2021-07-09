@@ -511,3 +511,74 @@ app.post("/deleteEntry", async function(req, resp) {
         return resp.status(500).send(err);
     }
 });
+
+getSearchedEntries = async(searchTerm) => {
+    const today = new Date();
+    const todayStr = today.toISOString().split("T")[0];
+    const [year, month] = todayStr.split("-");
+
+    const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
+
+    let latestEntries = [];
+    for (let i = 0; i < 12; i++) {
+        let previous = monthNames[(Number(month) - 1 + i) % monthNames.length];
+        latestEntries.push(
+            await client
+            .db("jou")
+            .collection(year)
+            .aggregate([{
+                $match: {
+                    monthName: previous,
+                },
+            }, ])
+            .toArray()
+        );
+    }
+
+    latestEntries = latestEntries
+        .flat()
+        .map((obj) => obj.entries)
+        .flat();
+
+    const sortedEntries = sortEntries(latestEntries);
+
+    return sortedEntries.filter((entry) => {
+        return (
+            entry.time.toLowerCase().includes(searchTerm) ||
+            entry.date.toLowerCase().includes(searchTerm) ||
+            entry.title.toLowerCase().includes(searchTerm) ||
+            entry.song.toLowerCase().includes(searchTerm) ||
+            entry.entry.toLowerCase().includes(searchTerm)
+        );
+    });
+};
+
+app.get("/getSearchedEntries", async function(req, resp) {
+    const searchTerm = req.query.searchTerm;
+    const startingIndex = Number(req.query.startingIndex);
+    const numEntries = Number(req.query.numEntries);
+
+    let collection = await getSearchedEntries(searchTerm);
+
+    const endIndex =
+        collection.length < startingIndex + numEntries ?
+        collection.length :
+        numEntries;
+
+    collection = collection.slice(startingIndex, endIndex);
+
+    return resp.json(collection.flat());
+});

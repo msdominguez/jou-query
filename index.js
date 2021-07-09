@@ -5,184 +5,199 @@ let currentPage = 0;
 let numPages = 0;
 
 onClickPageNext = () => {
-    currentPage += 1;
-    currentIndex += numEntriesPerPage;
+  currentPage += 1;
+  currentIndex += numEntriesPerPage;
 
-    $(".entries-container").html("");
+  $(".entries-container").html("");
 
-    if ($(".favorites-btn").attr("fill") === "var(--jou-color)") {
-        getFavorites().then((entries) => {
-            getFavoritesLength().then((res) => {
-                totalNumEntries = res;
-                numPages = Math.ceil(totalNumEntries / numEntriesPerPage) - 1;
+  if ($(".favorites-btn").attr("fill") === "var(--jou-color)") {
+    getFavorites().then((entries) => {
+      getFavoritesLength().then((res) => {
+        totalNumEntries = res;
+        numPages = Math.ceil(totalNumEntries / numEntriesPerPage) - 1;
 
-                if (currentPage === 0) {
-                    $("#left-btn").addClass("hidden");
-                } else {
-                    $("#left-btn").removeClass("hidden");
-                }
+        if (currentPage === 0) {
+          $("#left-btn").addClass("hidden");
+        } else {
+          $("#left-btn").removeClass("hidden");
+        }
 
-                if (currentPage < numPages) {
-                    $("#right-btn").removeClass("hidden");
-                }
+        if (currentPage < numPages) {
+          $("#right-btn").removeClass("hidden");
+        }
 
-                if (currentPage === numPages) {
-                    $("#right-btn").addClass("hidden");
-                }
-            });
+        if (currentPage === numPages) {
+          $("#right-btn").addClass("hidden");
+        }
+      });
 
-            populateEntries(entries);
-        });
-    } else {
-        getEntries().then((entries) => {
-            getEntriesLength().then((res) => {
-                totalNumEntries = res;
-                numPages = Math.ceil(totalNumEntries / numEntriesPerPage) - 1;
+      populateEntries(entries);
+    });
+  } else {
+    getEntries().then((entries) => {
+      getEntriesLength().then((res) => {
+        totalNumEntries = res;
+        numPages = Math.ceil(totalNumEntries / numEntriesPerPage) - 1;
 
-                if (currentPage === 0) {
-                    $("#left-btn").addClass("hidden");
-                } else {
-                    $("#left-btn").removeClass("hidden");
-                }
+        if (currentPage === 0) {
+          $("#left-btn").addClass("hidden");
+        } else {
+          $("#left-btn").removeClass("hidden");
+        }
 
-                if (currentPage < numPages) {
-                    $("#right-btn").removeClass("hidden");
-                }
+        if (currentPage < numPages) {
+          $("#right-btn").removeClass("hidden");
+        }
 
-                if (currentPage === numPages) {
-                    $("#right-btn").addClass("hidden");
-                }
-            });
-            populateEntries(entries);
-        });
-    }
+        if (currentPage === numPages) {
+          $("#right-btn").addClass("hidden");
+        }
+      });
+      populateEntries(entries);
+    });
+  }
 };
 
 onClickPagePrev = () => {
-    currentPage -= 1;
-    currentIndex -= numEntriesPerPage;
+  currentPage -= 1;
+  currentIndex -= numEntriesPerPage;
 
-    $(".entries-container").html("");
+  $(".entries-container").html("");
 
-    if ($(".favorites-btn").attr("fill") === "var(--jou-color)") {
-        getFavorites().then((entries) => {
-            getFavoritesLength().then((res) => {
-                totalNumEntries = res;
-                numPages = Math.ceil(totalNumEntries / numEntriesPerPage) - 1;
+  if ($(".favorites-btn").attr("fill") === "var(--jou-color)") {
+    getFavorites().then((entries) => {
+      getFavoritesLength().then((res) => {
+        totalNumEntries = res;
+        numPages = Math.ceil(totalNumEntries / numEntriesPerPage) - 1;
 
-                if (currentPage === 0) {
-                    $("#left-btn").addClass("hidden");
-                } else {
-                    $("#left-btn").removeClass("hidden");
-                }
+        if (currentPage === 0) {
+          $("#left-btn").addClass("hidden");
+        } else {
+          $("#left-btn").removeClass("hidden");
+        }
 
-                if (currentPage < numPages) {
-                    $("#right-btn").removeClass("hidden");
-                }
+        if (currentPage < numPages) {
+          $("#right-btn").removeClass("hidden");
+        }
 
-                if (currentPage === numPages) {
-                    $("#right-btn").addClass("hidden");
-                }
-            });
-            populateEntries(entries);
-        });
-    } else {
-        getEntries().then((entries) => {
-            getEntriesLength().then((res) => {
-                totalNumEntries = res;
-                numPages = Math.ceil(totalNumEntries / numEntriesPerPage) - 1;
+        if (currentPage === numPages) {
+          $("#right-btn").addClass("hidden");
+        }
+      });
+      populateEntries(entries);
+    });
+  } else {
+    getEntries().then((entries) => {
+      getEntriesLength().then((res) => {
+        totalNumEntries = res;
+        numPages = Math.ceil(totalNumEntries / numEntriesPerPage) - 1;
 
-                if (currentPage === 0) {
-                    $("#left-btn").addClass("hidden");
-                } else {
-                    $("#left-btn").removeClass("hidden");
-                }
+        if (currentPage === 0) {
+          $("#left-btn").addClass("hidden");
+        } else {
+          $("#left-btn").removeClass("hidden");
+        }
 
-                if (currentPage < numPages) {
-                    $("#right-btn").removeClass("hidden");
-                }
+        if (currentPage < numPages) {
+          $("#right-btn").removeClass("hidden");
+        }
 
-                if (currentPage === numPages) {
-                    $("#right-btn").addClass("hidden");
-                }
-            });
-            populateEntries(entries);
-        });
-    }
+        if (currentPage === numPages) {
+          $("#right-btn").addClass("hidden");
+        }
+      });
+      populateEntries(entries);
+    });
+  }
 };
 
-getFavoritesLength = async() => {
-    try {
-        return await $.ajax({
-            url: "/getFavoritesLength",
-            type: "GET",
-        });
-    } catch (error) {
-        console.error(error);
-    }
+getFavoritesLength = async () => {
+  try {
+    return await $.ajax({
+      url: "/getFavoritesLength",
+      type: "GET",
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-getEntriesLength = async() => {
-    try {
-        return await $.ajax({
-            url: `/getEntriesLength?startingIndex=${currentIndex}&numEntries=${numEntriesPerPage}`,
-            type: "GET",
-        });
-    } catch (error) {
-        console.error(error);
-    }
+getEntriesLength = async () => {
+  try {
+    return await $.ajax({
+      url: `/getEntriesLength?startingIndex=${currentIndex}&numEntries=${numEntriesPerPage}`,
+      type: "GET",
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-getEntries = async() => {
-    try {
-        return await $.ajax({
-            url: `/getEntries?startingIndex=${currentIndex}&numEntries=${numEntriesPerPage}`,
-            type: "GET",
-        });
-    } catch (error) {
-        console.error(error);
-    }
+getEntries = async () => {
+  try {
+    return await $.ajax({
+      url: `/getEntries?startingIndex=${currentIndex}&numEntries=${numEntriesPerPage}`,
+      type: "GET",
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-getFavorites = async() => {
-    try {
-        return await $.ajax({
-            url: `/getFavorites?startingIndex=${currentIndex}&numEntries=${numEntriesPerPage}`,
-            type: "GET",
-        });
-    } catch (error) {
-        console.error(error);
-    }
+getFavorites = async () => {
+  try {
+    return await $.ajax({
+      url: `/getFavorites?startingIndex=${currentIndex}&numEntries=${numEntriesPerPage}`,
+      type: "GET",
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+getSearchedEntries = async () => {
+  try {
+    const searchTerm = $(".search-input").val().toLowerCase();
+
+    return await $.ajax({
+      url: `/getSearchedEntries?startingIndex=${currentIndex}&numEntries=${numEntriesPerPage}&searchTerm=${searchTerm}`,
+      type: "GET",
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 sortEntries = (entries) => {
-    const sortedEntries = entries.sort((a, b) => {
-        let aDate = new Date(`${a.date} ${a.time}`);
-        let bDate = new Date(`${b.date} ${b.time}`);
-        return aDate - bDate;
-    });
-    return sortedEntries;
+  const sortedEntries = entries.sort((a, b) => {
+    let aDate = new Date(`${a.date} ${a.time}`);
+    let bDate = new Date(`${b.date} ${b.time}`);
+    return aDate - bDate;
+  });
+  return sortedEntries;
 };
 
 populateEntries = (entries) => {
-    if (entries.length !== 0) {
-        let counter = 0;
+  $(".entries-container").html("");
 
-        sortedEntries = sortEntries(entries);
+  if (entries.length !== 0) {
+    let counter = 0;
 
-        sortedEntries.map((entry) => {
-            const options = {
-                weekday: "long",
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-                timeZone: "UTC",
-            };
-            let formattedDate = new Date(entry.date).toLocaleDateString(
-                "en-US",
-                options
-            );
-            $(".entries-container").prepend(`<div class="entry-container">
+    sortedEntries = sortEntries(entries);
+
+    sortedEntries.map((entry) => {
+      const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        timeZone: "UTC",
+      };
+      let formattedDate = new Date(entry.date).toLocaleDateString(
+        "en-US",
+        options
+      );
+      $(".entries-container").prepend(`<div class="entry-container">
         <div class="date-time">
         <label class="date">${formattedDate}</label>
         <label class="separator">•</label>
@@ -198,158 +213,164 @@ populateEntries = (entries) => {
         <p class="entry listing">${entry.entry}</p>
         </div>
         `);
-            counter++;
-        });
-    }
+      counter++;
+    });
+  }
 };
 
 resetPaginationFavs = () => {
-    getFavorites().then((entries) => {
-        currentPage = 0;
-        totalNumEntries = 0;
-        currentIndex = 0;
-        numPages = 0;
-        $(".entries-container").html("");
-        $("#left-btn").addClass("hidden");
+  getFavorites().then((entries) => {
+    currentPage = 0;
+    totalNumEntries = 0;
+    currentIndex = 0;
+    numPages = 0;
+    $(".entries-container").html("");
+    $("#left-btn").addClass("hidden");
 
-        getFavoritesLength().then((res) => {
-            totalNumEntries = res;
-            if (res !== 0) {
-                if (totalNumEntries <= numEntriesPerPage) {
-                    $("#right-btn").addClass("hidden");
-                } else {
-                    $("#right-btn").removeClass("hidden");
-                }
-                numPages = Math.ceil(totalNumEntries / numEntriesPerPage) - 1;
-            }
-        });
-        populateEntries(entries);
+    getFavoritesLength().then((res) => {
+      totalNumEntries = res;
+      if (res !== 0) {
+        if (totalNumEntries <= numEntriesPerPage) {
+          $("#right-btn").addClass("hidden");
+        } else {
+          $("#right-btn").removeClass("hidden");
+        }
+        numPages = Math.ceil(totalNumEntries / numEntriesPerPage) - 1;
+      }
     });
+    populateEntries(entries);
+  });
 };
 
 resetPaginationEntries = () => {
-    getEntries().then((entries) => {
-        currentPage = 0;
-        totalNumEntries = 0;
-        currentIndex = 0;
-        numPages = 0;
-        $(".entries-container").html("");
-        $("#left-btn").addClass("hidden");
+  getEntries().then((entries) => {
+    currentPage = 0;
+    totalNumEntries = 0;
+    currentIndex = 0;
+    numPages = 0;
+    $(".entries-container").html("");
+    $("#left-btn").addClass("hidden");
 
-        getEntriesLength().then((res) => {
-            if (res !== 0) {
-                totalNumEntries = res;
-                if (totalNumEntries <= numEntriesPerPage) {
-                    $("#right-btn").addClass("hidden");
-                } else {
-                    $("#right-btn").removeClass("hidden");
-                }
-                numPages = Math.ceil(totalNumEntries / numEntriesPerPage) - 1;
-            }
-        });
-        populateEntries(entries);
+    getEntriesLength().then((res) => {
+      if (res !== 0) {
+        totalNumEntries = res;
+        if (totalNumEntries <= numEntriesPerPage) {
+          $("#right-btn").addClass("hidden");
+        } else {
+          $("#right-btn").removeClass("hidden");
+        }
+        numPages = Math.ceil(totalNumEntries / numEntriesPerPage) - 1;
+      }
     });
+    populateEntries(entries);
+  });
 };
 
 onLoad = () => {
-    resetPaginationEntries();
+  resetPaginationEntries();
 };
 
 onClickFavoritesIcon = () => {
-    $(".entries-container").html("");
+  $(".entries-container").html("");
 
-    const favoritesBtn = $(".favorites-btn");
-    if (favoritesBtn.attr("fill") === "none") {
-        favoritesBtn.attr("fill", "var(--jou-color)");
-        resetPaginationFavs();
-    } else {
-        favoritesBtn.attr("fill", "none");
-        resetPaginationEntries();
-    }
+  const favoritesBtn = $(".favorites-btn");
+  if (favoritesBtn.attr("fill") === "none") {
+    favoritesBtn.attr("fill", "var(--jou-color)");
+    resetPaginationFavs();
+  } else {
+    favoritesBtn.attr("fill", "none");
+    resetPaginationEntries();
+  }
 };
 
 onClickFiltersIcon = () => {
-    $(".filters-modal").removeClass("hide");
-    $(".home-content").addClass("filters-open");
-    $(".home-content").addClass("screen-height-cap");
+  $(".filters-modal").removeClass("hide");
+  $(".home-content").addClass("filters-open");
+  $(".home-content").addClass("screen-height-cap");
 };
 
 onCloseFiltersModal = () => {
-    $(".filters-modal").addClass("hide");
-    $(".home-content").removeClass("filters-open");
-    $(".home-content").removeClass("screen-height-cap");
+  $(".filters-modal").addClass("hide");
+  $(".home-content").removeClass("filters-open");
+  $(".home-content").removeClass("screen-height-cap");
 };
 
 $(document).on("click", ".entry-container", (event) => {
-    const [dateTime, heart, title, song, entry] = event.currentTarget.children;
-    const [date, , time] = dateTime.children;
+  const [dateTime, heart, title, song, entry] = event.currentTarget.children;
+  const [date, , time] = dateTime.children;
 
-    let favorite = true;
-    const currentHeart = $(`#${heart.id}`);
-    if (currentHeart.attr("fill") === "none") {
-        favorite = false;
-    }
+  let favorite = true;
+  const currentHeart = $(`#${heart.id}`);
+  if (currentHeart.attr("fill") === "none") {
+    favorite = false;
+  }
 
-    const currentEntry = {
-        time: time.innerHTML,
-        date: date.innerHTML,
-        title: title.innerHTML,
-        song: song.innerHTML,
-        entry: entry.innerHTML,
-        favorite,
-    };
-    localStorage.setItem("currentEntry", JSON.stringify(currentEntry));
-    window.location.href = "/entry.html";
+  const currentEntry = {
+    time: time.innerHTML,
+    date: date.innerHTML,
+    title: title.innerHTML,
+    song: song.innerHTML,
+    entry: entry.innerHTML,
+    favorite,
+  };
+  localStorage.setItem("currentEntry", JSON.stringify(currentEntry));
+  window.location.href = "/entry.html";
 });
 
 $(document).on("click", ".heart", (event) => {
-    event.stopPropagation();
+  event.stopPropagation();
 
-    let favorite = false;
-    const currentHeart = $(`#${event.currentTarget.id}`);
-    if (currentHeart.attr("fill") === "none") {
-        currentHeart.attr("fill", "var(--jou-color)");
-        favorite = true;
-    } else {
-        currentHeart.attr("fill", "none");
-    }
+  let favorite = false;
+  const currentHeart = $(`#${event.currentTarget.id}`);
+  if (currentHeart.attr("fill") === "none") {
+    currentHeart.attr("fill", "var(--jou-color)");
+    favorite = true;
+  } else {
+    currentHeart.attr("fill", "none");
+  }
 
-    const currentEntry = {
-        time: event.currentTarget.previousElementSibling.children[2].innerHTML,
-        date: event.currentTarget.previousElementSibling.children[0].innerHTML,
-        title: event.currentTarget.nextElementSibling.innerHTML,
-        song: event.currentTarget.nextElementSibling.nextElementSibling.innerHTML,
-        entry: event.currentTarget.nextElementSibling.nextElementSibling
-            .nextElementSibling.innerHTML,
-        favorite: !favorite,
-    };
+  const currentEntry = {
+    time: event.currentTarget.previousElementSibling.children[2].innerHTML,
+    date: event.currentTarget.previousElementSibling.children[0].innerHTML,
+    title: event.currentTarget.nextElementSibling.innerHTML,
+    song: event.currentTarget.nextElementSibling.nextElementSibling.innerHTML,
+    entry:
+      event.currentTarget.nextElementSibling.nextElementSibling
+        .nextElementSibling.innerHTML,
+    favorite: !favorite,
+  };
 
-    const updatedEntry = {
-        time: event.currentTarget.previousElementSibling.children[2].innerHTML,
-        date: event.currentTarget.previousElementSibling.children[0].innerHTML,
-        title: event.currentTarget.nextElementSibling.innerHTML,
-        song: event.currentTarget.nextElementSibling.nextElementSibling.innerHTML,
-        entry: event.currentTarget.nextElementSibling.nextElementSibling
-            .nextElementSibling.innerHTML,
-        favorite,
-    };
+  const updatedEntry = {
+    time: event.currentTarget.previousElementSibling.children[2].innerHTML,
+    date: event.currentTarget.previousElementSibling.children[0].innerHTML,
+    title: event.currentTarget.nextElementSibling.innerHTML,
+    song: event.currentTarget.nextElementSibling.nextElementSibling.innerHTML,
+    entry:
+      event.currentTarget.nextElementSibling.nextElementSibling
+        .nextElementSibling.innerHTML,
+    favorite,
+  };
 
-    try {
-        $.ajax({
-            type: "POST",
-            url: "/updateFavorite",
-            contentType: "application/json",
-            data: JSON.stringify(currentEntry),
-            error: function(e) {
-                $("#saveToast").html("error saving");
-                $("#saveToast").append(`<p>log: ${e.status}: ${e.statusText}</p>`);
-            },
-            success: function(data) {
-                $("#saveToast").html("saved");
-                localStorage.setItem("currentEntry", JSON.stringify(updatedEntry));
-            },
-        });
-    } catch (error) {
-        console.error(error);
-    }
+  try {
+    $.ajax({
+      type: "POST",
+      url: "/updateFavorite",
+      contentType: "application/json",
+      data: JSON.stringify(currentEntry),
+      error: function (e) {
+        $("#saveToast").html("error saving");
+        $("#saveToast").append(`<p>log: ${e.status}: ${e.statusText}</p>`);
+      },
+      success: function (data) {
+        $("#saveToast").html("saved");
+        localStorage.setItem("currentEntry", JSON.stringify(updatedEntry));
+      },
+    });
+  } catch (error) {
+    console.error(error);
+  }
 });
+
+onSearchEntries = () => {
+  getSearchedEntries().then((filteredData) => populateEntries(filteredData));
+};

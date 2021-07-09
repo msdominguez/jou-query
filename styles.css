@@ -225,6 +225,23 @@ select {
     max-height: 90vh;
 }
 
+.search-input {
+    padding-left: 3rem;
+    width: 21rem;
+}
+
+.search-icon {
+    padding-right: 1rem;
+    position: absolute;
+    padding-left: 0.5rem;
+    padding-bottom: 0.25rem;
+}
+
+.input-search-container {
+    display: flex;
+    align-items: center;
+}
+
 
 /* upsert entry */
 
