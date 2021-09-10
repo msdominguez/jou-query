@@ -377,3 +377,22 @@ select {
     margin-right: 2rem;
     width: 40%;
 }
+
+.pag-btn {
+    width: 40px;
+    height: auto;
+}
+
+.days-of-week {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(100vw-2rem);
+    margin: 1.5rem 1rem;
+    color: var(--jou-neutral-4);
+}
+
+.current-day-of-week {
+    color: var(--jou-color);
+    text-decoration: underline;
+}

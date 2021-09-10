@@ -66,6 +66,15 @@
         </svg>
         </div>
     </div>
+    <div class="days-of-week">
+        <span id="Sunday">S</span>
+        <span id="Monday">M</span>
+        <span id="Tuesady">T</span>
+        <span id="Wednesday">W</span>
+        <span id="Thursday">R</span>
+        <span id="Friday">F</span>
+        <span id="Saturday">S</span>
+    </div>
     <div class="entry-container">
         <div class="date-time">
             <label class="date"></label>
@@ -75,6 +84,16 @@
         <h1 class="title"></h1>
         <p class="song"></p>
         <p class="entry"></p>
+    </div>
+    <div class="pag-container">
+        <svg id="left-btn" onClick="onClickPagePrev()" class="pag-btn" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+        <svg id="right-btn" class="pag-btn" onClick="onClickPageNext()" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+      </svg>
     </div>
     <p id="saveToast" class="save-btn-toast"></p>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
