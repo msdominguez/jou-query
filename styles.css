@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css?family=Inter&display=swap");
-@import url("https://fonts.googleapis.com/css?family=Parisienne&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Tajawal:100,200,300,400,600,700&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Parisienne:100,200,300,400,600,700&display=swap");
 
 /* universal styles */
 
@@ -34,8 +34,8 @@ h2 {
 body {
     background-color: var(--jou-black);
     margin: 0;
-    font-family: Inter;
-    font-weight: 100;
+    font-family: Tajawal;
+    font-weight: 200;
 }
 
 p {
@@ -60,6 +60,8 @@ a {
 
 label {
     color: var(--jou-neutral-4);
+    font-size: 14px;
+    font-weight: 300;
 }
 
 input {
@@ -74,18 +76,16 @@ textarea {
 input,
 textarea,
 select {
-    font-family: Inter;
+    font-family: Tajawal;
     background-color: var(--jou-neutral-1-transparent);
-    border-radius: 10px;
-    border: none;
+    border-radius: 5px;
+    border: 1px solid var(--jou-neutral-1);
     width: 100%;
     max-width: 100%;
     font-size: 17px;
     padding: 0.5rem;
     color: var(--jou-neutral-4);
     margin-top: 0.25rem;
-    margin-bottom: 0.5rem;
-    box-shadow: 0px 0px 10px 9px inset var(--jou-neutral-1);
 }
 
 .jou-input {
@@ -95,12 +95,13 @@ select {
 .btn-primary {
     background-color: var(--jou-color);
     color: var(--jou-black);
-    font-size: 25px;
-    border: none;
+    font-size: 20px;
+    border: 1px solid var(--jou-neutral-2-transparent);
     border-radius: 5px;
-    width: 90vw;
+    width: calc(100vw - 2rem);
     height: 50px;
     cursor: pointer;
+    font-family: Tajawal;
 }
 
 .hidden {
@@ -154,11 +155,12 @@ select {
 }
 
 .subheader {
-    font-size: 16px;
+    font-size: 13px;
     color: var(--jou-neutral-2);
-    font-style: italic;
-    font-weight: 100;
+    font-weight: 200;
     padding-top: 0.75rem;
+    letter-spacing: 0.5px;
+    font-style: italic;
 }
 
 .title-block {
@@ -182,7 +184,7 @@ select {
 .home-actions {
     display: flex;
     justify-content: flex-end;
-    width: calc(100vw - 1rem);
+    width: calc(100vw - 2rem);
 }
 
 .add-new-btn {
@@ -227,20 +229,18 @@ select {
 }
 
 .search-input {
-    padding-left: 3rem;
-    width: 21rem;
+    padding-left: 3.5rem;
 }
 
 .search-icon {
-    padding-right: 1rem;
     position: absolute;
-    padding-left: 0.5rem;
-    padding-bottom: 0.25rem;
+    padding-left: 1rem;
 }
 
 .input-search-container {
     display: flex;
     align-items: center;
+    width: calc(100vw - 2rem);
 }
 
 
@@ -249,7 +249,7 @@ select {
 .heart-upsert-container {
     display: flex;
     justify-content: flex-end;
-    padding: 0.5rem;
+    padding: 1rem 0.5rem;
 }
 
 .input-row {
@@ -281,7 +281,7 @@ select {
 .am-pm {
     width: 20vw;
     height: 3.125rem;
-    margin-top: 2.5rem;
+    margin-top: 2.3rem;
     margin-right: 0.5rem;
 }
 
@@ -291,6 +291,7 @@ select {
 .date-time {
     display: flex;
     font-size: 13px;
+    font-weight: 200;
 }
 
 .entry-container {
@@ -308,6 +309,7 @@ select {
 
 .entry {
     padding-top: 1.5rem;
+    font-weight: 300;
 }
 
 .title {
@@ -316,6 +318,7 @@ select {
 
 .entry-line {
     padding: 0;
+    font-weight: 300;
 }
 
 .entry-line-spacer {
@@ -387,9 +390,9 @@ select {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: calc(100vw-2rem);
     margin: 1.5rem 1rem;
     color: var(--jou-neutral-4);
+    font-weight: 300;
 }
 
 .current-day-of-week {
