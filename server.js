@@ -114,27 +114,29 @@ client.connect((err) => {
 //     return resp.json(collection);
 // });
 
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+const today = new Date();
+const todayStr = today.toISOString().split("T")[0];
+
 app.get("/getFavorites", async function (req, resp) {
   const startingIndex = Number(req.query.startingIndex);
   const numEntries = Number(req.query.numEntries);
-  const today = new Date();
-  const todayStr = today.toISOString().split("T")[0];
-  const [year, month] = todayStr.split("-");
-
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
+  const [year, month] = req.query.year
+    ? [req.query.year, "01"]
+    : todayStr.split("-");
 
   let latestEntries = [];
   for (let i = 0; i < 12; i++) {
@@ -183,24 +185,9 @@ app.get("/getFavorites", async function (req, resp) {
 });
 
 app.get("/getFavoritesLength", async function (req, resp) {
-  const today = new Date();
-  const todayStr = today.toISOString().split("T")[0];
-  const [year, , month] = todayStr.split("-");
-
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
+  const [year, month] = req.query.year
+    ? [req.query.year, "01"]
+    : todayStr.split("-");
 
   let latestEntries = [];
   for (let i = 0; i < 12; i++) {
@@ -243,24 +230,9 @@ app.get("/getFavoritesLength", async function (req, resp) {
 });
 
 app.get("/getEntriesLength", async function (req, resp) {
-  const today = new Date();
-  const todayStr = today.toISOString().split("T")[0];
-  const [year, , month] = todayStr.split("-");
-
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
+  const [year, month] = req.query.year
+    ? [req.query.year, "01"]
+    : todayStr.split("-");
 
   let latestEntries = [];
   for (let i = 0; i < 12; i++) {
@@ -303,24 +275,9 @@ sortEntries = (entries) => {
 app.get("/getEntries", async function (req, resp) {
   const startingIndex = Number(req.query.startingIndex);
   const numEntriesRequested = Number(req.query.numEntries);
-  const today = new Date();
-  const todayStr = today.toISOString().split("T")[0];
-  const [year, month] = todayStr.split("-");
-
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
+  const [year, month] = req.query.year
+    ? [req.query.year, "01"]
+    : todayStr.split("-");
 
   let latestEntries = [];
   for (let i = 0; i < 12; i++) {
@@ -369,20 +326,6 @@ app.post("/addEntry", async function (req, resp) {
 
   const [year, newMonth] = date.split("-");
 
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
   const monthStr = monthNames[Number(newMonth) - 1];
 
   try {
@@ -509,11 +452,7 @@ app.post("/updateFavorite", async function (req, resp) {
       favorite,
     };
     const newElement = {
-      time,
-      date,
-      title,
-      song,
-      entry,
+      ...currentElement,
       favorite: !favorite,
     };
     collectionMonthUpdate.updateOne(
@@ -569,26 +508,8 @@ app.post("/deleteEntry", async function (req, resp) {
   }
 });
 
-getSearchedEntries = async (searchTerm) => {
-  const today = new Date();
-  const todayStr = today.toISOString().split("T")[0];
-  const [year, month] = todayStr.split("-");
-
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
+getSearchedEntries = async (yearParam, searchTerm) => {
+  const [year, month] = yearParam ? [yearParam, "01"] : todayStr.split("-");
   let latestEntries = [];
   for (let i = 0; i < 12; i++) {
     let previous = monthNames[(Number(month) - 1 + i) % monthNames.length];
@@ -630,7 +551,7 @@ app.get("/getSearchedEntries", async function (req, resp) {
   const startingIndex = Number(req.query.startingIndex);
   const numEntries = Number(req.query.numEntries);
 
-  let collection = await getSearchedEntries(searchTerm);
+  let collection = await getSearchedEntries(req.query.year, searchTerm);
 
   const endIndex =
     collection.length < startingIndex + numEntries

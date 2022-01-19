@@ -1,5 +1,6 @@
-@import url("https://fonts.googleapis.com/css?family=Tajawal:100,200,300,400,600,700&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Parisienne:100,200,300,400,600,700&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Heebo:100,200,300,400,600,700&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Inter:100,200,300,400,600,700&display=swap");
 
 /* universal styles */
 
@@ -24,6 +25,8 @@
 
 h1 {
     font-size: 20px;
+    font-family: Heebo;
+    font-weight: 400;
     margin-bottom: 0;
 }
 
@@ -34,7 +37,7 @@ h2 {
 body {
     background-color: var(--jou-black);
     margin: 0;
-    font-family: Tajawal;
+    font-family: Inter;
     font-weight: 200;
 }
 
@@ -76,7 +79,7 @@ textarea {
 input,
 textarea,
 select {
-    font-family: Tajawal;
+    font-family: Inter;
     background-color: var(--jou-neutral-1-transparent);
     border-radius: 5px;
     border: 1px solid var(--jou-neutral-1);
@@ -101,7 +104,7 @@ select {
     width: calc(100vw - 2rem);
     height: 50px;
     cursor: pointer;
-    font-family: Tajawal;
+    font-family: Heebo;
 }
 
 .hidden {
@@ -179,53 +182,19 @@ select {
 .main-btn-container {
     display: flex;
     flex-direction: column;
+    padding-bottom: 1rem;
 }
 
 .home-actions {
     display: flex;
-    justify-content: flex-end;
+    align-items: center;
+    justify-content: space-between;
     width: calc(100vw - 2rem);
+    padding-top: 1rem;
 }
 
 .add-new-btn {
     margin-top: 1.5rem;
-}
-
-.favorites-btn {
-    align-self: flex-end;
-    padding: 1rem;
-}
-
-.filter-btn {
-    align-self: flex-end;
-    padding: 1rem;
-}
-
-.filters-modal {
-    position: absolute;
-    height: 90vh;
-    width: 100%;
-    background-color: var(--jou-neutral-1-transparent);
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.home-content.filters-open {
-    filter: blur(20px);
-}
-
-.close-btn {
-    stroke: var(--jou-white);
-    align-self: flex-end;
-    margin-right: 2.5rem;
-    opacity: 0.7;
-    padding-top: 2rem;
-}
-
-.screen-height-cap {
-    overflow: hidden;
-    max-height: 90vh;
 }
 
 .search-input {
@@ -241,6 +210,41 @@ select {
     display: flex;
     align-items: center;
     width: calc(100vw - 2rem);
+}
+
+.years-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-self: flex-start;
+    overflow: scroll;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.year {
+    font-weight: 300;
+    min-inline-size: max-content;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.year-inactive {
+    color: var(--jou-neutral-4);
+    background-color: var(--jou-neutral-1-transparent);
+    border: 1px solid var(--jou-neutral-2-transparent);
+}
+
+.year-active {
+    color: var(--jou-black);
+    background-color: var(--jou-color);
+    border: 1px solid var(--jou-neutral-2-transparent);
+}
+
+.hide-entry {
+    height: 0;
 }
 
 

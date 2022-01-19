@@ -172,13 +172,7 @@ setNextPrevEntry = (entry) => {
   $(".song").html(currentEntry.song);
   $(".entry").html(currentEntry.entry);
 
-  const currentHeart = $("#heart-entry");
-
-  if (entry.favorite) {
-    currentHeart.attr("fill", "var(--jou-color)");
-  } else {
-    currentHeart.attr("fill", "none");
-  }
+  $("#heart-entry").attr("fill", entry.favorite ? "var(--jou-color)" : "none");
 
   localStorage.setItem("currentEntry", JSON.stringify(newCurrentEntry));
   window.location.href = "/entry.html";
