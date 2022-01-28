@@ -128,193 +128,6 @@ const monthNames = [
   "November",
   "December",
 ];
-const today = new Date();
-const todayStr = today.toISOString().split("T")[0];
-
-app.get("/getFavorites", async function (req, resp) {
-  const startingIndex = Number(req.query.startingIndex);
-  const numEntries = Number(req.query.numEntries);
-  const [year, month] = req.query.year
-    ? [req.query.year, "01"]
-    : todayStr.split("-");
-
-  let latestEntries = [];
-  for (let i = 0; i < 12; i++) {
-    let previous = monthNames[(Number(month) - 1 + i) % monthNames.length];
-    latestEntries.push(
-      await client
-        .db("jou")
-        .collection(year)
-        .aggregate([
-          {
-            $match: {
-              monthName: previous,
-            },
-          },
-          {
-            $project: {
-              entries: {
-                $filter: {
-                  input: "$entries",
-                  as: "entry",
-                  cond: { $eq: ["$$entry.favorite", true] },
-                },
-              },
-            },
-          },
-        ])
-        .toArray()
-    );
-  }
-
-  latestEntries = latestEntries
-    .flat()
-    .map((obj) => obj.entries)
-    .flat();
-
-  const sortedEntries = sortEntries(latestEntries);
-
-  const endIndex =
-    sortedEntries.length < startingIndex + numEntries
-      ? sortedEntries.length
-      : numEntries;
-
-  latestEntries = sortedEntries.slice(startingIndex, endIndex);
-
-  return resp.json(latestEntries);
-});
-
-app.get("/getFavoritesLength", async function (req, resp) {
-  const [year, month] = req.query.year
-    ? [req.query.year, "01"]
-    : todayStr.split("-");
-
-  let latestEntries = [];
-  for (let i = 0; i < 12; i++) {
-    let previous = monthNames[(Number(month) - 1 + i) % monthNames.length];
-    latestEntries.push(
-      await client
-        .db("jou")
-        .collection(year)
-        .aggregate([
-          {
-            $match: {
-              monthName: previous,
-            },
-          },
-          {
-            $project: {
-              entries: {
-                $filter: {
-                  input: "$entries",
-                  as: "entry",
-                  cond: { $eq: ["$$entry.favorite", true] },
-                },
-              },
-            },
-          },
-        ])
-        .toArray()
-    );
-  }
-
-  latestEntries = latestEntries
-    .flat()
-    .map((obj) => obj.entries)
-    .flat();
-
-  const sortedEntries = sortEntries(latestEntries);
-  const latestEntriesLength = sortedEntries.length;
-
-  return resp.json(latestEntriesLength);
-});
-
-app.get("/getEntriesLength", async function (req, resp) {
-  const [year, month] = req.query.year
-    ? [req.query.year, "01"]
-    : todayStr.split("-");
-
-  let latestEntries = [];
-  for (let i = 0; i < 12; i++) {
-    let previous = monthNames[(Number(month) - 1 + i) % monthNames.length];
-    latestEntries.push(
-      await client
-        .db("jou")
-        .collection(year)
-        .aggregate([
-          {
-            $match: {
-              monthName: previous,
-            },
-          },
-        ])
-        .toArray()
-    );
-  }
-
-  latestEntries = latestEntries
-    .flat()
-    .map((obj) => obj.entries)
-    .flat();
-
-  const sortedEntries = sortEntries(latestEntries);
-  const latestEntriesLength = sortedEntries.length;
-
-  return resp.json(latestEntriesLength);
-});
-
-sortEntries = (entries) => {
-  const sortedEntries = entries.sort((a, b) => {
-    let aDate = new Date(`${a.date} ${a.time}`);
-    let bDate = new Date(`${b.date} ${b.time}`);
-    return bDate - aDate;
-  });
-  return sortedEntries;
-};
-
-app.get("/getEntries", async function (req, resp) {
-  const startingIndex = Number(req.query.startingIndex);
-  const numEntriesRequested = Number(req.query.numEntries);
-  const [year, month] = req.query.year
-    ? [req.query.year, "01"]
-    : todayStr.split("-");
-
-  let latestEntries = [];
-  for (let i = 0; i < 12; i++) {
-    let previous = monthNames[(Number(month) - 1 + i) % monthNames.length];
-    latestEntries.push(
-      await client
-        .db("jou")
-        .collection(year)
-        .aggregate([
-          {
-            $match: {
-              monthName: previous,
-            },
-          },
-        ])
-        .toArray()
-    );
-  }
-
-  latestEntries = latestEntries
-    .flat()
-    .map((obj) => obj.entries)
-    .flat();
-
-  const sortedEntries = sortEntries(latestEntries);
-
-  // if there are less entries than you requested
-  // ex. 8 entries and you requested the next 10 entries
-  const endIndex =
-    sortedEntries.length < startingIndex + numEntriesRequested
-      ? sortedEntries.length
-      : startingIndex + numEntriesRequested;
-
-  latestEntries = sortedEntries.slice(startingIndex, endIndex);
-
-  return resp.json(latestEntries);
-});
 
 app.post("/addEntry", async function (req, resp) {
   const time = req.body.time;
@@ -508,11 +321,18 @@ app.post("/deleteEntry", async function (req, resp) {
   }
 });
 
-getSearchedEntries = async (yearParam, searchTerm) => {
-  const [year, month] = yearParam ? [yearParam, "01"] : todayStr.split("-");
+sortEntries = (entries) => {
+  let sortedEntries = entries.sort((a, b) => {
+    let aDate = new Date(`${a.date} ${a.time}`);
+    let bDate = new Date(`${b.date} ${b.time}`);
+    return bDate - aDate;
+  });
+  return sortedEntries;
+};
+
+const getFavorites = async (year) => {
   let latestEntries = [];
   for (let i = 0; i < 12; i++) {
-    let previous = monthNames[(Number(month) - 1 + i) % monthNames.length];
     latestEntries.push(
       await client
         .db("jou")
@@ -520,43 +340,77 @@ getSearchedEntries = async (yearParam, searchTerm) => {
         .aggregate([
           {
             $match: {
-              monthName: previous,
+              monthName: monthNames[i],
+            },
+          },
+          {
+            $project: {
+              entries: {
+                $filter: {
+                  input: "$entries",
+                  as: "entry",
+                  cond: { $eq: ["$$entry.favorite", true] },
+                },
+              },
             },
           },
         ])
         .toArray()
     );
   }
+  return latestEntries;
+};
+
+const getAllEntriesFiltered = async (year, searchTerm, isFavorites) => {
+  let latestEntries =
+    isFavorites === "true"
+      ? await getFavorites(year)
+      : await client.db("jou").collection(year).aggregate().toArray();
 
   latestEntries = latestEntries
     .flat()
     .map((obj) => obj.entries)
     .flat();
 
-  const sortedEntries = sortEntries(latestEntries);
+  let sortedEntries = sortEntries(latestEntries);
 
-  return sortedEntries.filter((entry) => {
-    return (
-      entry.time.toLowerCase().includes(searchTerm) ||
-      entry.date.toLowerCase().includes(searchTerm) ||
-      entry.title.toLowerCase().includes(searchTerm) ||
-      entry.song.toLowerCase().includes(searchTerm) ||
-      entry.entry.toLowerCase().includes(searchTerm)
+  if (searchTerm !== "") {
+    sortedEntries = sortedEntries.filter((entry) =>
+      Object.values(entry).some(
+        (e) =>
+          typeof e === "string" && e.toLowerCase() && e.includes(searchTerm)
+      )
     );
-  });
+  }
+
+  return sortedEntries;
 };
 
-app.get("/getSearchedEntries", async function (req, resp) {
-  const searchTerm = req.query.searchTerm;
+app.get("/getEntriesLength", async function (req, resp) {
+  let collection = await getAllEntriesFiltered(
+    req.query.year,
+    req.query.searchTerm,
+    req.query.isFavorites
+  );
+  return resp.json(collection.length);
+});
+
+app.get("/getEntries", async function (req, resp) {
+  let collection = await getAllEntriesFiltered(
+    req.query.year,
+    req.query.searchTerm,
+    req.query.isFavorites
+  );
+
   const startingIndex = Number(req.query.startingIndex);
   const numEntries = Number(req.query.numEntries);
 
-  let collection = await getSearchedEntries(req.query.year, searchTerm);
-
+  // if there are less entries than you requested
+  // ex. 8 entries and you requested the next 10 entries
   const endIndex =
     collection.length < startingIndex + numEntries
       ? collection.length
-      : numEntries;
+      : startingIndex + numEntries;
 
   collection = collection.slice(startingIndex, endIndex);
 
@@ -591,7 +445,7 @@ app.get("/getNextEntry", async function (req, resp) {
     }
     count++;
   });
-  const nextElement = collection[currentIndex + 1];
+  const nextElement = collection[currentIndex + 1] || {};
   return resp.json(nextElement);
 });
 
@@ -623,6 +477,6 @@ app.get("/getPrevEntry", async function (req, resp) {
     }
     count++;
   });
-  const prevElement = collection[currentIndex - 1];
+  const prevElement = collection[currentIndex - 1] || {};
   return resp.json(prevElement);
 });

@@ -1,16 +1,17 @@
 <html>
-  <head>
+
+<head>
     <title>jou query</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="styles.css" />
     <link rel="icon" href="./cloud.png" />
-  </head>
+</head>
 
-  <body class="pink" onload="onLoad()">
+<body class="peach" onload="loadPage()">
     <div class="home-content">
-      <div class="header-block">
-        <div class="title-block">
-          <svg height="1" width="110">
+        <div class="header-block">
+            <div class="title-block">
+                <svg height="1" width="110">
             <line
               x1="100"
               y1="0"
@@ -19,8 +20,8 @@
               style="stroke: var(--jou-neutral-3); stroke-width: 2"
             />
           </svg>
-          <h1 class="header">jou query</h1>
-          <svg height="1" width="110">
+                <h1 class="header">jou query</h1>
+                <svg height="1" width="110">
             <line
               x1="100"
               y1="0"
@@ -29,48 +30,24 @@
               style="stroke: var(--jou-neutral-3); stroke-width: 2"
             />
           </svg>
-        </div>
-        <h2 class="subheader">jou-query.herokuapp.com</h2>
-        <div class="main-btn-container">
-          <a href="/upsert-entry.html">
-            <button class="btn-primary add-new-btn">add entry</button>
-          </a>
-        </div>
+            </div>
+            <h2 class="subheader">jou-query.herokuapp.com</h2>
+            <div class="main-btn-container">
+                <a href="/upsert-entry.html">
+                    <button class="btn-primary add-entry-btn">add entry</button>
+                </a>
+            </div>
 
-        <div class="input-search-container">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon search-icon"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-search"
-          >
+            <div class="input-search-container">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon search-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <input
-            class="search-input"
-            placeholder="search"
-            onkeyup="onSearchEntries()"
-          />
-        </div>
-        <div class="home-actions">
-          <ul id="yearsList" class="years-list"></ul>
-          <svg
-            class="icon favorites-btn"
-            onclick="onClickFavoritesIcon()"
-            width="35"
-            height="25"
-            viewBox="0 0 41 29"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+                <input id="searchInput" class="search-input" placeholder="search" onkeyup="repopulateWithPagination()" />
+            </div>
+            <div class="home-actions">
+                <ul id="yearsList" class="years-list"></ul>
+                <svg id="favoritesBtn" class="icon favorites-btn" onclick="toggleFavoritesFilter()" width="35" height="25" viewBox="0 0 41 29" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M12.0087 3.31328C13.4894 1.8326 15.4976 1.00077 17.5916
                   1.00077C19.6856 1.00077 21.6938 1.8326 23.1745 3.31328L24.6958
@@ -93,50 +70,24 @@
               stroke-linejoin="round"
             />
           </svg>
+            </div>
         </div>
-      </div>
-      <div class="entries-container"></div>
-      <div class="pag-container">
-        <svg
-          id="left-btn"
-          onClick="onClickPagePrev()"
-          class="pag-btn hidden"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-skip-back"
-        >
-          <polygon points="19 20 9 12 19 4 19 20"></polygon>
-          <line x1="5" y1="19" x2="5" y2="5"></line>
+        <div id="entriesContainer" class="entries-container"></div>
+        <div class="pag-container">
+            <svg id="leftBtn" onclick="loadPrevPage()" class="pag-btn hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
         </svg>
-        <svg
-          id="right-btn"
-          class="pag-btn"
-          onClick="onClickPageNext()"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-skip-forward"
-        >
-          <polygon points="5 4 15 12 5 20 5 4"></polygon>
-          <line x1="19" y1="5" x2="19" y2="19"></line>
+            <svg id="rightBtn" class="pag-btn" onclick="loadNextPage()" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
         </svg>
-      </div>
+        </div>
     </div>
     <p id="saveToast" class="save-btn-toast"></p>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="common.js"></script>
     <script src="index.js"></script>
-  </body>
+</body>
+
 </html>
