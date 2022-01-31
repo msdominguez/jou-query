@@ -13,17 +13,18 @@ const populateInputs = () => {
     const amPm = time.split(" ")[1];
     $("#amPmInput").val(amPm);
     const timeFormatted = moment(new Date()).format("hh:mm:ss");
+    $("#timeInput").val(timeFormatted);
     $("#timeInput").inputmask("hh:mm:ss", {
       placeholder: timeFormatted,
       insertMode: false,
       showMaskOnHover: false,
       hourFormat: 12,
     });
-    $("#timeInput").val(timeFormatted);
   } else {
     const isoDate = new Date(currentEntry.date).toISOString().split("T")[0];
     $("#dateInput").val(isoDate);
     const [time, amPM] = currentEntry.time.split(" ");
+    console.log(time);
     $("#timeInput").val(time);
     $("#amPmInput").val(amPM);
     $("#titleInput").val(currentEntry.title);

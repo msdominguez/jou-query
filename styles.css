@@ -132,12 +132,15 @@ select {
 
 /* home */
 
+.pag-caption {
+    text-align: center;
+    padding: 1rem 0;
+}
+
 .pag-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 15px;
-    margin-bottom: 15px;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -moz-user-select: none;

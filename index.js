@@ -4,7 +4,7 @@ var currentIndex = 0;
 var currentPage = 0;
 var numPages = 0;
 const years = ["2022", "2021", "2020"];
-var year = new Date().getFullYear();
+var year = new Date().getFullYear().toString();
 
 const getEntriesLength = async () => {
   const searchTerm = $("#searchInput").val().toLowerCase();
@@ -45,6 +45,10 @@ const sortEntries = (entries) => {
   return sortedEntries;
 };
 
+const resetPagCaption = () => {
+  $("#pagCaption").html(`<p>Page ${currentPage + 1} of ${numPages + 1}</p>`);
+};
+
 const loadPagePaginated = async () => {
   $("#entriesContainer").html("");
 
@@ -68,6 +72,7 @@ const loadPagePaginated = async () => {
   }
 
   populateEntries(entries);
+  resetPagCaption();
 };
 
 const loadNextPage = () => {
@@ -86,7 +91,6 @@ const populateEntries = (entries) => {
   $("#entriesContainer").html("");
 
   if (entries.length !== 0) {
-    // const sortedEntries = entries;
     const sortedEntries = sortEntries(entries);
 
     sortedEntries.map((entry, i) => {
@@ -130,12 +134,12 @@ const populateEntries = (entries) => {
 };
 
 const repopulateWithPagination = async () => {
-  const [entries, entriesLength] = await getEntriesAndLengths();
-
   currentPage = 0;
   totalNumEntries = 0;
   currentIndex = 0;
   numPages = 0;
+
+  const [entries, entriesLength] = await getEntriesAndLengths();
 
   $("#entriesContainer").html("");
   $("#leftBtn").addClass("hidden");
@@ -150,6 +154,7 @@ const repopulateWithPagination = async () => {
     numPages = Math.ceil(totalNumEntries / numEntriesPerPage) - 1;
   }
   populateEntries(entries);
+  resetPagCaption();
 };
 
 const toggleActiveYear = (selectedYear) => {
@@ -166,10 +171,16 @@ const toggleActiveYear = (selectedYear) => {
     year = selectedYear.text();
   }
 
+  if ($(".year-active").length === 0) {
+    year = new Date().getFullYear().toString();
+    populateYears();
+  }
+
   repopulateWithPagination();
 };
 
 const populateYears = () => {
+  $("#yearsList").html("");
   $("#yearsList").append(
     years.map(
       (yr) =>
