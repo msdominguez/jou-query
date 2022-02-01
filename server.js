@@ -321,7 +321,7 @@ app.post("/deleteEntry", async function (req, resp) {
   }
 });
 
-sortEntries = (entries) => {
+const sortEntries = (entries) => {
   let sortedEntries = entries.sort((a, b) => {
     let aDate = new Date(`${a.date} ${a.time}`);
     let bDate = new Date(`${b.date} ${b.time}`);
@@ -387,7 +387,7 @@ const getAllEntriesFiltered = async (year, searchTerm, isFavorites) => {
 };
 
 app.get("/getEntriesLength", async function (req, resp) {
-  let collection = await getAllEntriesFiltered(
+  const collection = await getAllEntriesFiltered(
     req.query.year,
     req.query.searchTerm,
     req.query.isFavorites
@@ -405,25 +405,20 @@ app.get("/getEntries", async function (req, resp) {
   const startingIndex = Number(req.query.startingIndex);
   const numEntries = Number(req.query.numEntries);
 
-  // if there are less entries than you requested
-  // ex. 8 entries and you requested the next 10 entries
+  const numEntriesRequested = startingIndex + numEntries;
   const endIndex =
-    collection.length < startingIndex + numEntries
+    numEntriesRequested > collection.length
       ? collection.length
-      : startingIndex + numEntries;
+      : numEntriesRequested;
 
   collection = collection.slice(startingIndex, endIndex);
 
   return resp.json(collection.flat());
 });
 
-app.get("/getNextEntry", async function (req, resp) {
-  let [year, month, date] = new Date(req.query.date)
-    .toISOString()
-    .split("T")[0]
-    .split("-");
-
-  let newDate = new Date(req.query.date).toISOString().split("T")[0];
+const getAdjacentEntry = async (isPrevious, date, time) => {
+  const [year] = new Date(date).toISOString().split("T")[0].split("-");
+  const newDate = new Date(date).toISOString().split("T")[0];
 
   let collection = await client
     .db("jou")
@@ -436,47 +431,29 @@ app.get("/getNextEntry", async function (req, resp) {
     .map((obj) => obj.entries)
     .flat();
 
-  let count = 0;
-  let currentIndex = 0;
-  collection.find((entry) => {
-    let entryDate = new Date(entry.date).toISOString().split("T")[0];
-    if (newDate === entry.date && req.query.time === entry.time) {
-      currentIndex = count;
-    }
-    count++;
-  });
-  const nextElement = collection[currentIndex + 1] || {};
+  const foundIndex = collection
+    .map((entry, i) =>
+      newDate === entry.date && time === entry.time ? i : undefined
+    )
+    .find((i) => i !== undefined);
+  const newIndex = isPrevious ? foundIndex - 1 : foundIndex + 1;
+  return collection[newIndex] || {};
+};
+
+app.get("/getNextEntry", async function (req, resp) {
+  const nextElement = await getAdjacentEntry(
+    false,
+    req.query.date,
+    req.query.time
+  );
   return resp.json(nextElement);
 });
 
 app.get("/getPrevEntry", async function (req, resp) {
-  let [year, month, date] = new Date(req.query.date)
-    .toISOString()
-    .split("T")[0]
-    .split("-");
-
-  let newDate = new Date(req.query.date).toISOString().split("T")[0];
-
-  let collection = await client
-    .db("jou")
-    .collection(year)
-    .aggregate([])
-    .toArray();
-
-  collection = collection
-    .flat()
-    .map((obj) => obj.entries)
-    .flat();
-
-  let count = 0;
-  let currentIndex = 0;
-  collection.find((entry) => {
-    let entryDate = new Date(entry.date).toISOString().split("T")[0];
-    if (newDate === entry.date && req.query.time === entry.time) {
-      currentIndex = count;
-    }
-    count++;
-  });
-  const prevElement = collection[currentIndex - 1] || {};
+  const prevElement = await getAdjacentEntry(
+    true,
+    req.query.date,
+    req.query.time
+  );
   return resp.json(prevElement);
 });
