@@ -325,6 +325,7 @@ const sortEntries = (entries) => {
   let sortedEntries = entries.sort((a, b) => {
     let aDate = new Date(`${a.date} ${a.time}`);
     let bDate = new Date(`${b.date} ${b.time}`);
+    // most recent is index 0
     return bDate - aDate;
   });
   return sortedEntries;

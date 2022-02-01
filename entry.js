@@ -1,27 +1,23 @@
 let currentEntry = {};
 
-const getNextEntry = async () => {
+const getAdjacentEntry = async (direction) => {
   try {
     currentEntry = JSON.parse(localStorage.getItem("currentEntry"));
     return await $.ajax({
-      url: `/getNextEntry?date=${currentEntry.date}&time=${currentEntry.time}`,
+      url: `/get${direction}Entry?date=${currentEntry.date}&time=${currentEntry.time}`,
       type: "GET",
     });
   } catch (error) {
-    console.log(`[getNextEntry] error: ${error}`);
+    console.log(`[get${direction}Entry] error: ${error}`);
   }
 };
 
+const getNextEntry = async () => {
+  return await getAdjacentEntry("Next");
+};
+
 const getPrevEntry = async () => {
-  try {
-    currentEntry = JSON.parse(localStorage.getItem("currentEntry"));
-    return await $.ajax({
-      url: `/getPrevEntry?date=${currentEntry.date}&time=${currentEntry.time}`,
-      type: "GET",
-    });
-  } catch (error) {
-    console.log(`[getPrevEntry] error: ${error}`);
-  }
+  return await getAdjacentEntry("Prev");
 };
 
 const resetPagination = () => {

@@ -40,6 +40,7 @@ const sortEntries = (entries) => {
   const sortedEntries = entries.sort((a, b) => {
     let aDate = new Date(`${a.date} ${a.time}`);
     let bDate = new Date(`${b.date} ${b.time}`);
+    // show most recent at the top of page
     return aDate - bDate;
   });
   return sortedEntries;
