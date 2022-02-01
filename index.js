@@ -144,16 +144,15 @@ const repopulateWithPagination = async () => {
 
   $("#entriesContainer").html("");
   $("#leftBtn").addClass("hidden");
+  $("#rightBtn").addClass("hidden");
 
-  if (entriesLength !== 0) {
-    totalNumEntries = entriesLength;
-    if (totalNumEntries <= numEntriesPerPage) {
-      $("#rightBtn").addClass("hidden");
-    } else {
-      $("#rightBtn").removeClass("hidden");
-    }
-    numPages = Math.ceil(totalNumEntries / numEntriesPerPage) - 1;
+  totalNumEntries = entriesLength;
+  if (totalNumEntries <= numEntriesPerPage) {
+    $("#rightBtn").addClass("hidden");
+  } else {
+    $("#rightBtn").removeClass("hidden");
   }
+  numPages = Math.floor(totalNumEntries / numEntriesPerPage);
   populateEntries(entries);
   resetPagCaption();
 };
