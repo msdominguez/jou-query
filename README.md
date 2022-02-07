@@ -4,7 +4,7 @@ http://jou-query.herokuapp.com/
 
 A journal application built with JQuery, Node.js, and MongoDB. Create, view, edit, delete, favorite, and filter journal entries. Designed for iPhone XR.
 
-# /index
+## /index
 * view short summaries of entries sorted in most recent order
 * view an entry by clicking on it (navigates to /entry)
 * add a new entry (navigates to /upsert-entry)
@@ -13,14 +13,14 @@ A journal application built with JQuery, Node.js, and MongoDB. Create, view, edi
 * filter entries by favorite
 * search entries by keyword in any field
 
-# /entry
+## /entry
 * view entry
 * update favorite
 * edit entry (navigates to /upsert-entry)
 * delete entry
 * view previous and next most recent entries within the selected year
 
-# /upsert-entry
+## /upsert-entry
 * fill out input fields: time, date, title, song, entry, favorite
 * save entry (create new or update existing entry)
 
