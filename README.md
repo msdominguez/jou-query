@@ -1,4 +1,4 @@
-# jou-query
+# Jou Query
 
 http://jou-query.herokuapp.com/
 
