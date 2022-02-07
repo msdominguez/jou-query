@@ -1,6 +1,6 @@
 # Jou Query
 
-http://jou-query.herokuapp.com/
+[http://jou-query.herokuapp.com/](http://jou-query.herokuapp.com/)
 
 A journal application built with JQuery, Node.js, and MongoDB. Create, view, edit, delete, favorite, and filter journal entries. Designed for iPhone XR.
 
